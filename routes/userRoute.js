@@ -79,4 +79,19 @@ router.put("/:id", (req, res) => {
     console.log(error);
   }
 });
+
+// DELETE A USER
+router.delete("/:id", (req, res) => {
+  try {
+    con.query(
+      `Delete from users WHERE user_id= ${req.params.id}`,
+      (err, result) => {
+        if (err) throw err;
+        res.send(result);
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+});
 module.exports = router;
