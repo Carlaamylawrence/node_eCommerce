@@ -5,7 +5,7 @@ const con = require("../lib/db_connection");
 // GET ALL USERS
 router.get("/", (req, res) => {
   try {
-    con.query("SELECT * FROM users", (err, result) => {
+    con.query("SELECT * FROM products", (err, result) => {
       if (err) throw err;
       res.send(result);
     });
@@ -28,7 +28,7 @@ router.post("/", (req, res) => {
   } = req.body;
   try {
     con.query(
-      `INSERT INTO users (email, password, full_name, billing_address, default_shipping_address, country, phone, user_type) values ("${email}","${password}","${full_name}","${billing_address}","${default_shipping_address}","${country}","${phone}", "${user_type}")`,
+      `INSERT INTO products (email, password, full_name, billing_address, default_shipping_address, country, phone, user_type) values ("${email}","${password}","${full_name}","${billing_address}","${default_shipping_address}","${country}","${phone}", "${user_type}")`,
       (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -43,7 +43,7 @@ router.post("/", (req, res) => {
 router.get("/:id", (req, res) => {
   try {
     con.query(
-      `SELECT * FROM users where user_id= ${req.params.id} `,
+      `SELECT * FROM products where user_id= ${req.params.id} `,
       (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -69,7 +69,7 @@ router.put("/:id", (req, res) => {
   } = req.body;
   try {
     con.query(
-      `UPDATE users SET email="${email}", password="${password}", full_name="${full_name}", billing_address="${billing_address}", default_shipping_address="${default_shipping_address}", country="${country}", phone="${phone}", user_type="${user_type}" WHERE user_id= ${req.params.id}`,
+      `UPDATE products SET email="${email}", password="${password}", full_name="${full_name}", billing_address="${billing_address}", default_shipping_address="${default_shipping_address}", country="${country}", phone="${phone}", user_type="${user_type}" WHERE user_id= ${req.params.id}`,
       (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -84,22 +84,7 @@ router.put("/:id", (req, res) => {
 router.delete("/:id", (req, res) => {
   try {
     con.query(
-      `Delete from users WHERE user_id= ${req.params.id}`,
-      (err, result) => {
-        if (err) throw err;
-        res.send(result);
-      }
-    );
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-router.patch("/", (req, res) => {
-  const { email, password } = req.body;
-  try {
-    con.query(
-      `SELECT * FROM users WHERE email="${email}" AND password="${password}"`,
+      `Delete from products WHERE user_id= ${req.params.id}`,
       (err, result) => {
         if (err) throw err;
         res.send(result);
