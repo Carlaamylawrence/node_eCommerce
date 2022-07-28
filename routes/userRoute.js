@@ -95,6 +95,7 @@ router.delete("/:id", (req, res) => {
   }
 });
 
+// LOGIN
 router.patch("/", (req, res) => {
   const { email, password } = req.body;
   try {
