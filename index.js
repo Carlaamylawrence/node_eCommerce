@@ -24,6 +24,8 @@ app.use("/users", userRoute);
 app.use("/products", productRoute);
 app.use("/categories", categoryRoute);
 app.use("/orders", orderRoute);
+// app.use("/login", loginRoute);
+// app.use("/register", registerRoute);
 
 // Set up server to start listening for requests
 app.listen(app.get("port"), () => {
