@@ -2,11 +2,14 @@ const express = require("express");
 const router = express.Router();
 const con = require("../lib/db_connection");
 const bcrypt = require("bcryptjs");
+const middleware = require("../middleware/auth");
+const jwt = require("jsonwebtoken");
 
-// GET ALL USERS
-router.get("/", (req, res) => {
+// MIDDLEWARE
+router.get("/", middleware, (req, res) => {
   try {
-    con.query("SELECT * FROM users", (err, result) => {
+    let sql = "SELECT * FROM users";
+    con.query(sql, (err, result) => {
       if (err) throw err;
       res.send(result);
     });
@@ -14,6 +17,17 @@ router.get("/", (req, res) => {
     console.log(error);
   }
 });
+// GET ALL USERS
+// router.get("/", (req, res) => {
+//   try {
+//     con.query("SELECT * FROM users", (err, result) => {
+//       if (err) throw err;
+//       res.send(result);
+//     });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
 
 //ADD A USER
 router.post("/", (req, res) => {
@@ -41,10 +55,10 @@ router.post("/", (req, res) => {
 });
 
 // GET SINGLE USER
-router.get("/:id", (req, res) => {
+router.get("/", middleware, (req, res) => {
   try {
     con.query(
-      `SELECT * FROM users where user_id= ${req.params.id} `,
+      `SELECT * FROM users where user_id= ${req.user.id} `,
       (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -68,9 +82,11 @@ router.put("/:id", (req, res) => {
     phone,
     user_type,
   } = req.body;
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(password, salt);
   try {
     con.query(
-      `UPDATE users SET email="${email}", password="${password}", full_name="${full_name}", billing_address="${billing_address}", default_shipping_address="${default_shipping_address}", country="${country}", phone="${phone}", user_type="${user_type}" WHERE user_id= ${req.params.id}`,
+      `UPDATE users SET email="${email}", password="${hash}", full_name="${full_name}", billing_address="${billing_address}", default_shipping_address="${default_shipping_address}", country="${country}", phone="${phone}", user_type="${user_type}" WHERE user_id= ${req.params.id}`,
       (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -82,10 +98,10 @@ router.put("/:id", (req, res) => {
 });
 
 // DELETE A USER
-router.delete("/:id", (req, res) => {
+router.delete("/:id", middleware, (req, res) => {
   try {
     con.query(
-      `Delete from users WHERE user_id= ${req.params.id}`,
+      `Delete from users WHERE user_id= ${req.user.id}`,
       (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -160,17 +176,39 @@ router.post("/login", (req, res) => {
       if (result.length === 0) {
         res.send("Email not found please register");
       } else {
-        // Decryption
-        // Accepts the password stored in database and the password given by user (req.body)
         const isMatch = await bcrypt.compare(
           req.body.password,
           result[0].password
         );
-        // If password does not match
+        console.log(req.body.password, result[0].password);
         if (!isMatch) {
           res.send("Password incorrect");
         } else {
-          res.send(result);
+          // The information the should be stored inside token
+          const payload = {
+            user: {
+              user_id: result[0].user_id,
+              full_name: result[0].full_name,
+              email: result[0].email,
+              user_type: result[0].user_type,
+              phone: result[0].phone,
+              country: result[0].country,
+              billing_address: result[0].billing_address,
+              default_shipping_address: result[0].default_shipping_address,
+            },
+          };
+          // Creating a token and setting expiry date
+          jwt.sign(
+            payload,
+            process.env.jwtSecret,
+            {
+              expiresIn: "365d",
+            },
+            (err, token) => {
+              if (err) throw err;
+              res.json({ token });
+            }
+          );
         }
       }
     });
@@ -179,4 +217,18 @@ router.post("/login", (req, res) => {
   }
 });
 
+// Verify
+router.get("/users/verify", (req, res) => {
+  const token = req.header("x-auth-token");
+  jwt.verify(token, process.env.jwtSecret, (error, decodedToken) => {
+    if (error) {
+      res.status(401).json({
+        msg: "Unauthorized Access!",
+      });
+    } else {
+      res.status(200);
+      res.send(decodedToken);
+    }
+  });
+});
 module.exports = router;
