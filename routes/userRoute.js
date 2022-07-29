@@ -99,17 +99,17 @@ router.put("/:id", (req, res) => {
 
 // DELETE A USER
 router.delete("/:id", middleware, (req, res) => {
-  try {
-    con.query(
-      `Delete from users WHERE user_id= ${req.user.id}`,
-      (err, result) => {
+  if (req.user.user_type === "admin")
+    try {
+      let sql = "Delete from users WHERE ?";
+      let users = { user_id: req.params.id };
+      con.query(sql, users, (err, result) => {
         if (err) throw err;
         res.send(result);
-      }
-    );
-  } catch (error) {
-    console.log(error);
-  }
+      });
+    } catch (error) {
+      console.log(error);
+    }
 });
 
 // LOGIN

@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const con = require("../lib/db_connection");
+const middleware = require("../middleware/auth");
 
 // GET ALL CATEGORIES
 router.get("/", (req, res) => {
@@ -15,18 +16,25 @@ router.get("/", (req, res) => {
 });
 
 //ADD A CATEGORY
-router.post("/", (req, res) => {
-  const { category_id, name, description, thumbnail } = req.body;
-  try {
-    con.query(
-      `INSERT INTO categories (category_id, name, description, thumbnail) values ("${category_id}","${name}","${description}","${thumbnail}")`,
-      (err, result) => {
+router.post("/", middleware, (req, res) => {
+  if (req.user.user_type === "admin")
+    try {
+      let sql = "INSERT INTO categories SET ?";
+      let categories = ({
+        category_id: req.body.category_id,
+        name: req.body.name,
+        description: req.body.description,
+        thumbnail: req.body.thumbnail,
+      } = req.body);
+      con.query(sql, categories, (err, result) => {
         if (err) throw err;
         res.send(result);
-      }
-    );
-  } catch (error) {
-    console.log(error);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  else {
+    res.send("Not Allowed");
   }
 });
 
@@ -47,33 +55,47 @@ router.get("/:id", (req, res) => {
 });
 
 //EDIT A CATEGORY
-router.put("/:id", (req, res) => {
-  const { category_id, name, description, thumbnail } = req.body;
-  try {
-    con.query(
-      `UPDATE categories SET category_id="${category_id}", name="${name}", description="${description}", thumbnail="${thumbnail}" WHERE category_id= ${req.params.id}`,
-      (err, result) => {
+router.put("/:id", middleware, (req, res) => {
+  if (req.user.user_type === "admin") {
+    try {
+      let sql = "SELECT * FROM categories WHERE ? ";
+      let categories = { category_id: req.params.id };
+      con.query(sql, categories, (err, result) => {
         if (err) throw err;
-        res.send(result);
-      }
-    );
-  } catch (error) {
-    console.log(error);
+        if (result.length !== 0) {
+          let updateSql = `UPDATE categories SET ? WHERE category_id = ${req.params.id}`;
+          let updateCategories = {
+            category_id: req.body.category_id,
+            name: req.body.name,
+            description: req.body.description,
+            thumbnail: req.body.thumbnail,
+          };
+          con.query(updateSql, updateCategories, (err, updated) => {
+            if (err) throw err;
+            res.send("Successfully updated Categories");
+          });
+        } else {
+          res.send("Categories not found");
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 });
 
 // DELETE A CATEGORY
-router.delete("/:id", (req, res) => {
-  try {
-    con.query(
-      `Delete from categories WHERE category_id= ${req.params.id}`,
-      (err, result) => {
+router.delete("/:id", middleware, (req, res) => {
+  if (req.user.user_type === "admin")
+    try {
+      let sql = "Delete from categories WHERE ?";
+      let categories = { category_id: req.params.id };
+      con.query(sql, categories, (err, result) => {
         if (err) throw err;
         res.send(result);
-      }
-    );
-  } catch (error) {
-    console.log(error);
-  }
+      });
+    } catch (error) {
+      console.log(error);
+    }
 });
 module.exports = router;

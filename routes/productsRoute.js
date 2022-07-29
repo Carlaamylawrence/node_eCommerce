@@ -16,7 +16,7 @@ router.get("/", (req, res) => {
 });
 
 //ADD A PRODUCT
-router.post("/product", middleware, (req, res) => {
+router.post("/", middleware, (req, res) => {
   if (req.user.user_type === "admin")
     try {
       let date = new Date().toISOString().slice(0, 19).replace("T", " ");
@@ -88,7 +88,7 @@ router.get("/:id", (req, res) => {
 });
 
 //EDIT A PRODUCT
-router.put("product/:id", middleware, (req, res) => {
+router.put("/:id", middleware, (req, res) => {
   if (req.user.user_type === "admin") {
     try {
       let sql = "SELECT * FROM products WHERE ? ";
@@ -151,16 +151,15 @@ router.put("product/:id", middleware, (req, res) => {
 // });
 
 // DELETE A PRODUCT
-router.delete("/product/:id", middleware, (req, res) => {
-  if (req.user.user)
+router.delete("/:id", middleware, (req, res) => {
+  if (req.user.user_type === "admin")
     try {
-      con.query(
-        `Delete from products WHERE product_id= ${req.params.id}`,
-        (err, result) => {
-          if (err) throw err;
-          res.send(result);
-        }
-      );
+      let sql = "Delete from products WHERE ?";
+      let product = { product_id: req.params.id };
+      con.query(sql, product, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+      });
     } catch (error) {
       console.log(error);
     }
