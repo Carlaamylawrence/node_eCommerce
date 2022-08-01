@@ -16,14 +16,19 @@ app.use(cors()); // Dont let local development give errors
 
 // This is where we check URLs and Request methods to create functionality
 // GET '/' is always what will be displayed on the home page of your application
-app.get("/", (req, res) => {
-  res.json({ msg: "Welcome" });
-});
+// app.get("/", (req, res) => {
+//   res.json({ msg: "Welcome" });
+// });
 // Use individual routes when visiting these URLS
 app.use("/users", userRoute);
 app.use("/products", productRoute);
 app.use("/categories", categoryRoute);
 app.use("/orders", orderRoute);
+
+app.use(express.static("public"));
+app.get("/", function (req, res) {
+  res.sendFile(__dirname + "/" + "index.html");
+});
 
 // Set up server to start listening for requests
 app.listen(app.get("port"), () => {
