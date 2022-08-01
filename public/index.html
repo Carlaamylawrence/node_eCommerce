@@ -7,53 +7,108 @@
     <title>Document</title>
   </head>
   <body>
-    <h1>USERS</h1>
-    <div id="users"></div>
+    <div>
+      <table id="users"></table>
+    </div>
+    <div>
+      <table id="products"></table>
+    </div>
 
     <script>
-      const url = "http://localhost:6969/users";
+      const url = "http://localhost:6969";
 
-      fetch(url, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("Success:", data);
-          show(data);
+      function getUsers(url) {
+        fetch(url + "/" + "users", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
         })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Success:", data);
+            show(data);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+
+      function getProducts(url) {
+        fetch(url + "/" + "products", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Success:", data);
+            showProducts(data);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+
+      function showProducts(data) {
+        let table = `<tr>
+            <th>sku</th>
+            <th>name</th>
+            <th>price</th>
+            <th>weight</th>
+            <th>descriptions</th>
+            <th>thumbnail</th>
+            <th>image</th>
+            <th>category</th>
+            <th>create_date</th>
+            <th>stock</th>
+            </tr>`;
+        for (let p of data) {
+          table += `<tr>
+            <td>${p.sku}</td>
+            <td>${p.name}</td>
+            <td>${p.price}</td>
+            <td>${p.weight}</td>
+            <td>${p.descriptions}</td>
+            <td>${p.thumbnail}</td>
+            <td>${p.image}</td>
+            <td>${p.category}</td>
+            <td>${p.create_date}</td>
+            <td>${p.stock}</td>
+            <tr>`;
+        }
+        document.getElementById("products").innerHTML = table;
+      }
 
       function show(data) {
         let table = `<tr>
-              <th>full_name</th>
-              <th>password</th>
-              <th>email</th>
-              <th>billing_address</th>
-              <th>default_shipping_address</th>
-              <th>country</th>
-              <th>phone</th>
-              <th>user_type</th>
-              </tr>`;
+                <th>full_name</th>
+                <th>password</th>
+                <th>email</th>
+                <th>billing_address</th>
+                <th>default_shipping_address</th>
+                <th>country</th>
+                <th>phone</th>
+                <th>user_type</th>
+                </tr>`;
         for (let r of data) {
           table += ` <tr>
-                  <td> ${r.full_name}</td>
-                  <td> ${r.password}</td>
-                  <td> ${r.email}</td>
-                  <td> ${r.billing_address}</td>
-                  <td> ${r.default_shipping_address}</td>
-                  <td> ${r.country}</td>
-                  <td> ${r.phone}</td>
-                  <td> ${r.user_type}</td>
-                  </tr>`;
+                    <td> ${r.full_name}</td>
+                    <td> ${r.password}</td>
+                    <td> ${r.email}</td>
+                    <td> ${r.billing_address}</td>
+                    <td> ${r.default_shipping_address}</td>
+                    <td> ${r.country}</td>
+                    <td> ${r.phone}</td>
+                    <td> ${r.user_type}</td>
+                    </tr>`;
         }
         document.getElementById("users").innerHTML = table;
       }
-
+      getUsers(url);
+      getProducts(url);
+      console.log("It is working");
       //   let user =[]
 
       //   fetch("http://localhost:6969/users", {
