@@ -1,0 +1,22 @@
+#navlinks {
+  display: flex;
+  justify-content: space-around;
+  align-content: center;
+}
+
+#navlinks a {
+  text-decoration: none;
+  color: gray;
+}
+
+#navlinks a:hover {
+  text-decoration: none;
+  color: deeppink;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

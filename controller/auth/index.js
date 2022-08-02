@@ -6,6 +6,7 @@ require("dotenv").config();
 // LOGIN FUNCTION
 
 async function Login(req, res) {
+  console.log(req.body);
   try {
     let sql = "SELECT * FROM users WHERE ?";
     let user = {
@@ -29,6 +30,7 @@ async function Login(req, res) {
             status: "error",
             error: "Password Incorrect",
           });
+          console.log("isMatch");
         } else {
           // The information the should be stored inside token
           const payload = {
@@ -52,6 +54,7 @@ async function Login(req, res) {
             },
             (err, token) => {
               if (err) throw err;
+
               res.json({ token });
             }
           );

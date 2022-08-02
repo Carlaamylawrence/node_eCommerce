@@ -4,11 +4,20 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles.css" />
     <title>Document</title>
   </head>
   <body>
+    <nav>
+      <div id="navlinks">
+        <a href="./login.html"> LOGIN</a>
+        <a href="./register.html">REGISTER</a>
+        <a href="./users.html"> USERS</a>
+        <a href="./products.html">PRODUCTS</a>
+      </div>
+    </nav>
     <h2>LOGIN</h2>
-    <form id="login">
+    <form id="login" onsubmit="Login(event)">
       <input id="email" type="text" name="email" />
       <input id="psw" type="text" name="psw" />
       <button type="submit" class="btn">LOGIN</button>
@@ -25,16 +34,16 @@
         const email = document.getElementById("email").value;
         const password = document.getElementById("psw").value;
 
-        const response = await fetch(url + "/" + "login", {
+        const response = await fetch(url + "/users/login", {
           method: "post",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            email,
-            password,
+            email: document.getElementById("email").value,
+            password: document.getElementById("psw").value,
           }),
-        }).then((res) => res.json());
+        }).then((res) => console.log(res.json()));
       }
     </script>
   </body>

@@ -111,6 +111,7 @@ router.post("/register", (req, res) => {
 
 // Login
 router.post("/login", (req, res) => {
+  console.log(req.body);
   return authController.Login(req, res);
 });
 
