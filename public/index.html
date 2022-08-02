@@ -4,120 +4,70 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script src="./scripts/psw.js"></script>
     <title>Document</title>
   </head>
   <body>
+    <h1>eCommerce store</h1>
     <div>
-      <table id="users"></table>
-    </div>
-    <div>
-      <table id="products"></table>
+      <a href="./login.html"> LOGIN</a>
+      <a href="./register.html">REGISTER</a>
+      <a href="./users.html"> USERS</a>
+      <a href="./products.html">PRODUCTS</a>
     </div>
 
     <script>
-      const url = "http://localhost:6969";
+          let token = window.localStorage.getItem("user.token");
+          let user = JSON.parse(window.localStorage(getItem("user")));
 
-      function getUsers(url) {
-        fetch(url + "/" + "users", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log("Success:", data);
-            show(data);
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
+          function getProducts(url) {
+            fetch(url + "/" + "products", {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            })
+              const data = await response.json();
+      if (data.length === 0) {
+        alert("Table Users is empty");
+      } else {
+        showProducts(data);
       }
+          }
 
-      function getProducts(url) {
-        fetch(url + "/" + "products", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log("Success:", data);
-            showProducts(data);
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
-      }
-
-      function showProducts(data) {
-        let table = `<tr>
-            <th>sku</th>
-            <th>name</th>
-            <th>price</th>
-            <th>weight</th>
-            <th>descriptions</th>
-            <th>thumbnail</th>
-            <th>image</th>
-            <th>category</th>
-            <th>create_date</th>
-            <th>stock</th>
-            </tr>`;
-        for (let p of data) {
-          table += `<tr>
-            <td>${p.sku}</td>
-            <td>${p.name}</td>
-            <td>${p.price}</td>
-            <td>${p.weight}</td>
-            <td>${p.descriptions}</td>
-            <td>${p.thumbnail}</td>
-            <td>${p.image}</td>
-            <td>${p.category}</td>
-            <td>${p.create_date}</td>
-            <td>${p.stock}</td>
-            <tr>`;
-        }
-        document.getElementById("products").innerHTML = table;
-      }
-
-      function show(data) {
-        let table = `<tr>
-                <th>full_name</th>
-                <th>password</th>
-                <th>email</th>
-                <th>billing_address</th>
-                <th>default_shipping_address</th>
-                <th>country</th>
-                <th>phone</th>
-                <th>user_type</th>
+          function showProducts(data) {
+            let table = `<tr>
+                <th>sku</th>
+                <th>name</th>
+                <th>price</th>
+                <th>weight</th>
+                <th>descriptions</th>
+                <th>thumbnail</th>
+                <th>image</th>
+                <th>category</th>
+                <th>create_date</th>
+                <th>stock</th>
                 </tr>`;
-        for (let r of data) {
-          table += ` <tr>
-                    <td> ${r.full_name}</td>
-                    <td> ${r.password}</td>
-                    <td> ${r.email}</td>
-                    <td> ${r.billing_address}</td>
-                    <td> ${r.default_shipping_address}</td>
-                    <td> ${r.country}</td>
-                    <td> ${r.phone}</td>
-                    <td> ${r.user_type}</td>
-                    </tr>`;
-        }
-        document.getElementById("users").innerHTML = table;
-      }
-      getUsers(url);
-      getProducts(url);
-      console.log("It is working");
-      //   let user =[]
+            for (let p of data) {
+              table += `<tr>
+                <td>${p.sku}</td>
+                <td>${p.name}</td>
+                <td>${p.price}</td>
+                <td>${p.weight}</td>
+                <td>${p.descriptions}</td>
+                <td>${p.thumbnail}</td>
+                <td>${p.image}</td>
+                <td>${p.category}</td>
+                <td>${p.create_date}</td>
+                <td>${p.stock}</td>
+                <tr>`;
+            }
+            document.getElementById("products").innerHTML = table;
+          }
 
-      //   fetch("http://localhost:6969/users", {
-      //     method: "GET",
-      //     headers:{
-      //         'x-auth-token': ""
-      //     }. then ((res) => res.json()).then ((data)=>{
-      //         user = data})
-      //   })
+          getProducts(url);
+          console.log("It is working");
     </script>
   </body>
 </html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="resetPassword">
+      <h2>Please enter your details below</h2>
+      <form id="resetPSW">
+        <input id="psw" class="password" name="psw" />
+        <button type="submit">SUBMIT</button>
+      </form>
+    </div>
+
+    <script>
+      const url = "http://localhost:6969";
+      const form = document.getElementById("resetPSW");
+      form.addEventListener("submit", resetPsw);
+
+      async function resetPsw(event) {
+        event.preventDefault();
+        const password = document.getElementById("psw").value;
+        const user_id = window.localStorage.getItem("user_id");
+
+        const response = await fetch(url + `/users/reset-psw/${user_id}`, {
+          method: "put",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            password,
+          }),
+        }).then((res) => res.json());
+      }
+    </script>
+  </body>
+</html>

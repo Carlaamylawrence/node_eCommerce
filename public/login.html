@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h2>LOGIN</h2>
+    <form id="login">
+      <input id="email" type="text" name="email" />
+      <input id="psw" type="text" name="psw" />
+      <button type="submit" class="btn">LOGIN</button>
+    </form>
+    <a href="./forgotPsw.html"><button class="btn">FORGOT PASSWORD</button></a>
+
+    <script>
+      const url = "http://localhost:6969";
+      const form = document.getElementById("login");
+      form.addEventListener("submit", Login);
+
+      async function Login(event) {
+        event.preventDefault();
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("psw").value;
+
+        const response = await fetch(url + "/" + "login", {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        }).then((res) => res.json());
+      }
+    </script>
+  </body>
+</html>

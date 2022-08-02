@@ -14,7 +14,10 @@ async function Login(req, res) {
     con.query(sql, user, async (err, result) => {
       if (err) throw err;
       if (result.length === 0) {
-        res.send("Email not found please register");
+        res.status(400).json({
+          status: "error",
+          error: "Email Not Found",
+        });
       } else {
         const isMatch = await bcrypt.compare(
           req.body.password,
@@ -22,7 +25,10 @@ async function Login(req, res) {
         );
         console.log(req.body.password, result[0].password);
         if (!isMatch) {
-          res.send("Password incorrect");
+          res.status(400).json({
+            status: "error",
+            error: "Password Incorrect",
+          });
         } else {
           // The information the should be stored inside token
           const payload = {

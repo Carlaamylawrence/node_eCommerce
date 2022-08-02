@@ -1,6 +1,7 @@
 // Import needed libraries
 const express = require("express"); // Used to set up a server
 const cors = require("cors"); // Used to prevent errors when working locally
+const bodyParser = require("body-parser");
 
 // Import routes
 const userRoute = require("./routes/userRoute");
@@ -29,6 +30,8 @@ app.use(express.static("public"));
 app.get("/", function (req, res) {
   res.sendFile(__dirname + "/" + "index.html");
 });
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // Set up server to start listening for requests
 app.listen(app.get("port"), () => {
