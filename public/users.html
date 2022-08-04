@@ -11,7 +11,26 @@
     <div>
       <table id="users"></table>
     </div>
+
+    <script>
+      const api_url = "https://thisisyourstore.herokuapp.com";
+      //SHOW USERS
+      async function getUsers(url) {
+        const response = await fetch(url + "/" + "users", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        const data = await response.json();
+        if (data.length === 0) {
+          alert("Table Users is empty");
+        } else {
+          show(data);
+        }
+        getUsers(api_url);
+      }
+    </script>
   </body>
 </html>
-
-<script></script>
