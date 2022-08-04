@@ -7,18 +7,11 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const authController = require("../controller/auth/index");
 const passController = require("../controller/password/index");
+const displayController = require("../controller/display/index");
 
 // Get users
 router.get("/", (req, res) => {
-  try {
-    let sql = "SELECT * FROM users";
-    con.query(sql, (err, result) => {
-      if (err) throw err;
-      res.send(result);
-    });
-  } catch (error) {
-    console.log(error);
-  }
+  return displayController.Login(req, res);
 });
 
 //ADD A USER

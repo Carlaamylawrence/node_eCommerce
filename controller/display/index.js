@@ -1,3 +1,15 @@
+async function getUsers(req, res) {
+  try {
+    let sql = "SELECT * FROM users";
+    con.query(sql, (err, result) => {
+      if (err) throw err;
+      res.send(result);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 function show(data) {
   let table = `<tr>
                 <th>full_name</th>
@@ -23,3 +35,6 @@ function show(data) {
   }
   document.getElementById("users").innerHTML = table;
 }
+module.exports = {
+  getUsers,
+};
