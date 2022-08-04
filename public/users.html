@@ -12,6 +12,7 @@
     </div>
 
     <script>
+      const api_url = "https://thisisyourstore.herokuapp.com";
       //SHOW USERS
       async function getUsers(url) {
         const response = await fetch(url + "/" + "users", {
@@ -27,8 +28,10 @@
         } else {
           show(data);
         }
-        getUsers(api_url);
       }
+
+      getUsers(api_url);
+
       function show(data) {
         let table = `<tr>
                 <th>full_name</th>
