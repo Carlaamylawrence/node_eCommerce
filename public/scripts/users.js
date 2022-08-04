@@ -1,4 +1,4 @@
-const api_url = "http://localhost:6969";
+const api_url = "https://thisisyourstore.herokuapp.com";
 // let token = window.localStorage.getItem("user.token");
 // let user = JSON.parse(window.localStorage(getItem("user")));
 
