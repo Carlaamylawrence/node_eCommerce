@@ -37,7 +37,7 @@ async function forgotPsw(req, res) {
             <br>
             <h4>Click link below to reset your password</h4>
 
-            <a href="http://localhost:6969/resetPsw.html">
+            <a href="https://thisisyourstore.herokuapp.com/resetPsw.html">
               Click Here to Reset Password
               user_id = ${result[0].user_id}
             </a>
