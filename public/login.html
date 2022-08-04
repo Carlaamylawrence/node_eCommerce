@@ -16,16 +16,20 @@
         <a href="./products.html">PRODUCTS</a>
       </div>
     </nav>
-    <h2>LOGIN</h2>
-    <form id="login" onsubmit="Login(event)">
-      <input id="email" type="text" name="email" />
-      <input id="psw" type="text" name="psw" />
-      <button type="submit" class="btn">LOGIN</button>
-    </form>
-    <a href="./forgotPsw.html"><button class="btn">FORGOT PASSWORD</button></a>
+    <div class="loginForm">
+      <h2>LOGIN</h2>
+      <form id="login" onsubmit="Login(event)">
+        <input id="email" type="text" name="email" />
+        <input id="psw" type="text" name="psw" />
+        <button type="submit" class="btn">LOGIN</button>
+      </form>
+      <a href="./forgotPsw.html"
+        ><button class="btn">FORGOT PASSWORD</button></a
+      >
+    </div>
 
     <script>
-      const url = "http://localhost:6969";
+      const url = "https://thisisyourstore.herokuapp.com";
       const form = document.getElementById("login");
       form.addEventListener("submit", Login);
 
