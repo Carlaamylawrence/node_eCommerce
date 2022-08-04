@@ -8,7 +8,8 @@
   </head>
   <body>
     <div>
-      <table id="products"></table>
+      <div id="products"></div>
+      <div id="product"></div>
     </div>
     <script>
       const api_url = "https://thisisyourstore.herokuapp.com";
@@ -28,36 +29,53 @@
       }
 
       function showProducts(data) {
-        let table = `<tr>
-                <th>sku</th>
-                <th>name</th>
-                <th>price</th>
-                <th>weight</th>
-                <th>descriptions</th>
-                <th>thumbnail</th>
-                <th>image</th>
-                <th>category</th>
-                <th>create_date</th>
-                <th>stock</th>
-                </tr>`;
-        for (let p of data) {
-          table += `<tr>
-                <td>${p.sku}</td>
-                <td>${p.name}</td>
-                <td>${p.price}</td>
-                <td>${p.weight}</td>
-                <td>${p.descriptions}</td>
-                <td>${p.thumbnail}</td>
-                <td>${p.image}</td>
-                <td>${p.category}</td>
-                <td>${p.create_date}</td>
-                <td>${p.stock}</td>
-                <tr>`;
+        console.log(data);
+        let display = "";
+        for (let item of data) {
+          display += `<ul>
+                <li>${item.product_id}</li>
+                <li>${item.sku}</li>
+                <li>${item.name}</li>
+                <li>${item.price}</li>
+                <li>${item.weight}</li>
+                <li>${item.descriptions}</li>
+                <li>${item.thumbnail}</li>
+                <li>${item.image}</li>
+                <li>${item.category}</li>
+                <li>${item.create_date}</li>
+                <li>${item.stock}</li>
+                <button onclick="SingleProduct(${item.product_id})">view<button
+                </ul>`;
         }
-        document.getElementById("products").innerHTML = table;
+        document.getElementById("products").innerHTML = display;
       }
 
       getProducts(api_url);
+      // GET SINGLE PRODUCT
+      async function SingleProduct(id) {
+        const response = await fetch(`http://localhost:6969/products/${id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await response.json();
+        if (data.length === 0) {
+          alert("Select an item");
+        } else {
+          showSingleProduct(data);
+        }
+      }
+
+      function showSingleProduct(data) {
+        console.log(data);
+        document.getElementById("product").innerHTML = "";
+        for (let p of data) {
+          `${p.name}`;
+        }
+        document.getElementById("product").innerHTML = `<p>${name}`;
+      }
+      SingleProduct(api_url);
     </script>
   </body>
 </html>

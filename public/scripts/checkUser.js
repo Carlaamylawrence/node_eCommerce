@@ -1,6 +1,3 @@
-let token = window.localStorage.getItem("user.token");
-let user = JSON.parse(window.localStorage(getItem("user")));
-
 async function checkUser(url) {
   let user = JSON.parse(window.localStorage(getItem("user")));
   if (user === null || user === undefined || !user) {

@@ -48,6 +48,7 @@
             password: document.getElementById("psw").value,
           }),
         }).then((res) => console.log(res.json()));
+        window.localStorage.setItem("token");
       }
     </script>
   </body>

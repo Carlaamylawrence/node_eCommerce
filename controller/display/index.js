@@ -42,8 +42,24 @@ async function getProducts(req, res) {
   }
 }
 
+async function SingleProduct(req, res) {
+  try {
+    con.query(
+      `SELECT * FROM products where product_id= ${req.params.id} `,
+      (err, result) => {
+        if (err) throw err;
+        res.send(result);
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+}
+
 module.exports = {
   getUsers,
   getSingleUser,
   getProducts,
+  SingleProduct,
 };
