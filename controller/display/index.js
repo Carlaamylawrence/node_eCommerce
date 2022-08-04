@@ -30,7 +30,20 @@ async function getSingleUser(req, res) {
     res.status(400).send(error);
   }
 }
+
+async function getProducts(req, res) {
+  try {
+    con.query("SELECT * FROM products", (err, result) => {
+      if (err) throw err;
+      res.send(result);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 module.exports = {
   getUsers,
   getSingleUser,
+  getProducts,
 };
