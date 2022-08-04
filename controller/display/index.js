@@ -1,3 +1,7 @@
+const bcrypt = require("bcryptjs");
+const con = require("../../lib/db_connection");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 // GET ALL USER
 async function getUsers(req, res) {
   try {
