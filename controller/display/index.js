@@ -1,3 +1,4 @@
+// GET ALL USER
 async function getUsers(req, res) {
   try {
     let sql = "SELECT * FROM users";
@@ -35,6 +36,23 @@ function show(data) {
   }
   document.getElementById("users").innerHTML = table;
 }
+
+// GET A SINGLE USER
+async function getSingleUser(req, res) {
+  try {
+    con.query(
+      `SELECT * FROM users where user_id= ${req.user.id} `,
+      (err, result) => {
+        if (err) throw err;
+        res.send(result);
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+}
 module.exports = {
   getUsers,
+  getSingleUser,
 };

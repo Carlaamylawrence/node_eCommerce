@@ -11,7 +11,7 @@ const displayController = require("../controller/display/index");
 
 // Get users
 router.get("/", (req, res) => {
-  return displayController.Login(req, res);
+  return displayController.getUsers(req, res);
 });
 
 //ADD A USER
@@ -41,18 +41,7 @@ router.post("/", (req, res) => {
 
 // GET SINGLE USER
 router.get("/", (req, res) => {
-  try {
-    con.query(
-      `SELECT * FROM users where user_id= ${req.user.id} `,
-      (err, result) => {
-        if (err) throw err;
-        res.send(result);
-      }
-    );
-  } catch (error) {
-    console.log(error);
-    res.status(400).send(error);
-  }
+  return displayController.getSingleUser(req, res);
 });
 
 //EDIT A USER
