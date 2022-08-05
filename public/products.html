@@ -32,7 +32,7 @@
         console.log(data);
         let display = "";
         for (let item of data) {
-          display += `<ul>
+          display += `<div class="card">
                 <li>${item.product_id}</li>
                 <li>${item.sku}</li>
                 <li>${item.name}</li>
@@ -45,7 +45,7 @@
                 <li>${item.create_date}</li>
                 <li>${item.stock}</li>
                 <button onclick="SingleProduct(${item.product_id})">view<button
-                </ul>`;
+                </div>`;
         }
         document.getElementById("products").innerHTML = display;
       }
